@@ -1,7 +1,7 @@
 
 # IUT Planning App
 
-This project aims to recreate the IUT planning website with a modern interface, featuring the ability to add homework, evaluations, and grades for each course. The app will be built using HTML, CSS, and JavaScript for the front-end and Python for the back-end, including a web scraping script to fetch the timetable (EDT).
+This project aims to recreate the IUT planning website with a modern interface, featuring the ability to add homework, evaluations, and grades for each course. The app will be built using HTML, CSS, and JavaScript for the front-end and Python for the back-end, including a web scraping script to fetch the timetable.
 
 ## Features
 - Modern user interface for viewing the schedule.
@@ -24,17 +24,23 @@ To run this project locally, follow these steps:
    cd https://github.com/seyyko/Plancton.git
    ```
 
-2. Install the required dependencies:
+2. Create a virtual environment:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+
+3. Install the required dependencies:
    ```bash
    pip install -r requirements.txt
    ```
 
-3. Run the backend server:
+4. Run the backend server:
    ```bash
-   python app.py
+   python src/back_end/app.py
    ```
 
-4. Open the front-end in your browser:
+5. Open the front-end in your browser:
    - The app will be available at `http://localhost:5000`.
 
 ## License
