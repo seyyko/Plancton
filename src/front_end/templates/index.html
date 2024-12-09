@@ -3,9 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cursor_event.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/display.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/navbar.css') }}">
+
     <title>Plancton | Home</title>
+
+    <script src="{{ url_for('static', filename='js/navbar.js') }}" defer></script>
+
 </head>
 <body>
-    <h1>Plancton!</h1>
+
+    <nav id="navbar">
+        <ul class="navlist df fdr">
+            <li class="leftbox df f1 fdr jc_start ai_center">
+                <a href="#" class="bold fw600 poppins uppercase underline_event">Plancton</a>
+            </li>
+            <ul class="rightbox df f1 fdr jc_sa ai_center fw400 montserrat">
+                <li class="navbox-link">
+                    <a href="#" class="underline_event">about</a>
+                </li>
+                <li class="navbox-link">
+                    <a href="#" class="underline_event">services</a>
+                </li>
+                <li class="navbox-link">
+                    <div class="menu-btn" onclick="menuBtnActive(this)">
+                        <span class="top-layer menu-btn-layer"></span>
+                        <span class="bottom-layer menu-btn-layer"></span>
+                    </div>
+                </li>
+            </ul>
+        </ul>
+    </nav>
+
+    <header id="header" class="df ai_center">
+        <div class="header-bg-box">
+            <img class="header-bg" src="{{ url_for('static', filename='img/header_bg.png') }}" alt="header background">
+        </div>
+        <div class="header-box">
+            <aside class="header-logo">
+                <p>✦</p>
+                <p>PLANCTON</p>
+                <p>✦</p>
+            </aside>
+            <div class="header-content">
+                <h1 class="header-title">WHAT IS PLANCTON ?</h1>
+                <p class="header-description">Plancton is a modern web application designed to help students efficiently organize their homework, tests, and grades. With an intuitive interface and vibrant colors, Plancton allows users to easily manage their schedules, track assignments, and stay on top of their academic goals. It's a lightweight, serverless solution focused on user privacy, storing data directly on the browser without the need for server-side authentication.</p>
+            </div>
+        </div>
+    </header>
+
 </body>
 </html>

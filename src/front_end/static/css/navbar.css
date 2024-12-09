@@ -1,0 +1,62 @@
+#navbar{
+    position: fixed;
+    width: 100%; height: 80px;
+    z-index: 9999999999;
+    /* background-color: red; */
+}
+
+.navlist{
+    /* background-color: lime; */
+    width: 90%; height: 100%;
+    margin-inline: auto;
+    gap: 10px;
+}
+
+.leftbox, .rightbox{
+    /* background-color: blue; */
+    font-size: clamp(.8em, 2vw, 1em);
+    a{
+        padding: clamp(0px, 1vw, 10px) clamp(0px, 2vw, 30px);
+    }
+}
+
+.leftbox{
+    padding-inline: 5vw;
+    max-width: 40%;
+    font-size: clamp(1.5em, 2vw, 2em);
+}
+
+.menu-btn{
+    --menu-btn-rotationy-angle: 0deg;
+    --menu-btn-posY: 8px;
+    --layer-bg: var(--text-primary);
+    
+    position: relative;
+    width: 6vw; height: 60px;
+    max-width: 100px; min-width: 60px;
+    cursor: pointer;
+}
+
+.menu-btn-layer{
+    position: absolute;
+    width: 80%; height: 4px;
+
+    background-color: var(--layer-bg);
+    transition: transform .4s ease, background-color .4s ease;
+}
+
+.top-layer{
+    top: 50%; left: 50%;
+    transform: translate(-50%, calc(-1 * var(--menu-btn-posY))) rotate(var(--menu-btn-rotationy-angle));
+}
+
+.bottom-layer{
+    top: 50%; left: 50%;
+    transform: translate(-50%, var(--menu-btn-posY)) rotate(calc(-1 * var(--menu-btn-rotationy-angle)));
+}
+
+.menu-btn-active{
+    --menu-btn-rotationy-angle: 15deg;
+    --menu-btn-posY: 0px;
+    --layer-bg: var(--bg-secondary);
+}
