@@ -21,7 +21,7 @@ To run this project locally, follow these steps:
 1. Clone the repository:
    ```bash
    git clone https://github.com/seyyko/Plancton.git
-   cd https://github.com/seyyko/Plancton.git
+   cd Plancton
    ```
 
 2. Create a virtual environment:
@@ -41,7 +41,10 @@ To run this project locally, follow these steps:
    ```
 
 5. Open the front-end in your browser:
-   - The app will be available at `http://localhost:5000`.
+   - The application will be available on all addresses (0.0.0.0:80)
+   - in particular on:
+      - http://127.0.0.1:80
+      - and your ip address.
 
 ## License
 This project is open-source and available under the MIT License. See the LICENSE file for more information.
