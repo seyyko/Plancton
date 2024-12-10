@@ -1,0 +1,102 @@
+
+
+#plg-section{
+    margin-top: 100px;
+    transform: scale(.9);
+}
+
+.week-days{
+    display: flex; justify-content: space-evenly;
+    width: 100%; padding-block: 10px;
+    padding-inline: 20px;
+
+    background-color: var(--bg-primary);
+    & p{
+        flex: 1;
+        text-align: center;
+        font-size: clamp(8px, 2vw, 16px);
+    }
+}
+.plg{
+    position: relative;
+    width: 100%;
+    left: 50%;
+    transform: translate(-50%);
+    padding: 20px;
+
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(1125, 1fr);
+
+    gap: 1px .3vw;
+    overflow: hidden;
+    background-color: var(--bg-primary);
+    border: 1px solid white;
+    p {
+        width: 100%;
+        text-align: center;
+        color: black;
+        font-size: clamp(6px, 1vw, 16px);
+        padding: 5px 2px; 
+    }
+}
+
+.plg-data{
+    background-color: var(--bg-secondary);
+    border-radius: 10px;
+}
+
+.lun{
+    grid-column: 1;
+}
+.mar{
+    grid-column: 2;
+}
+.mer{
+    grid-column: 3;
+}
+.jeu{
+    grid-column: 4;
+}
+.ven{
+    grid-column: 5;
+}
+.sam{
+    grid-column: 6;
+}
+.dim{
+    grid-column: 7;
+}
+
+.border{
+    box-shadow: 1px 0 0 .5px white;
+}
+
+/* 
+
+"web",
+"math",
+"dev",
+"archi", "systemes",
+"eco", "gestion",
+"bd",
+"ppp",
+"sae",
+"comm",
+"anglais",
+"tutorat", "soutien"
+
+*/
+
+/* .web{background-color: plum;}
+.math{background-color: blue;}
+.dev{background-color: red;}
+.systemes{background-color: palevioletred;}
+.archi{background-color: purple;}
+.eco, .gestion{background-color: yellow;}
+.bd{background-color: aqua;}
+.ppp{background-color: green;}
+.sae{background-color: rgb(113, 237, 113);}
+.comm{background-color: lightcyan;}
+.anglais{background-color: pink;}
+.tutorat, .soutien, .default{background-color: white;} */

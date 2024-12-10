@@ -33,12 +33,12 @@ a{
 /* header */
 
 #header{
-    width: 100%; height: 95vh;
+    width: 100%; height: 100vh;
 }
 
 .header-bg-box{
     position: absolute;
-    width: 100%; height: 95vh;
+    width: 100%; height: 100vh;
     box-shadow: inset 0 100px 10em 50px var(--text-secondary);
 }
 .header-bg{
