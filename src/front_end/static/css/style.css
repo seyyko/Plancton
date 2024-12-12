@@ -3,7 +3,7 @@
     --bg-secondary  : 52,51,11;
     --bg-tertiary   : 60,84,60;
 
-    --alt-bg    : 86,80,8;
+    --alt-bg    : 42,61,42;
     --hover-bg  : 115,157,7;
 
     --alpha: .6;
@@ -173,7 +173,8 @@ imp{
         display: flex;
         align-items: center; justify-content: space-evenly;
 
-        writing-mode: sideways-lr;
+        writing-mode: vertical-rl;
+        text-orientation: sideways;
         font-size: clamp(1em, 15vw, 100px);
 
         p{

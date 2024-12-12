@@ -9,9 +9,9 @@
 
 .plg-content{
     transform: scale(.9);
-    border: 1px solid rgb(var(--alt-bg));
+    border: 1px solid rgb(var(--bg-tertiary));
     border-radius: 5px;
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .week-days{
@@ -19,7 +19,7 @@
     width: 100%; padding-block: 10px;
     padding-inline: 5px;
 
-    background-color: rgb(var(--alt-bg));
+    background-color: rgb(var(--bg-tertiary));
     & p{
         flex: 1;
         text-align: center;
@@ -27,10 +27,7 @@
     }
 }
 .plg{
-    position: relative;
     width: 100%;
-    left: 50%;
-    transform: translate(-50%);
     padding: 5px;
 
     display: grid;
@@ -38,8 +35,8 @@
     grid-template-rows: repeat(1125, 1fr);
 
     gap: 1px .3vw;
-    overflow: hidden;
-    background-color: rgb(var(--bg-secondary));
+    /* overflow: hidden; */
+    background-color: rgb(var(--alt-bg));
     p {
         width: 100%;
         text-align: center;
@@ -49,34 +46,12 @@
 }
 
 .plg-data{
-    background-color: rgb(var(--alt-bg));
+    background-color: rgb(var(--bg-tertiary));
     border-radius: 5px;
     cursor: default;
+
     &:hover{
-        background-color: rgba(var(--alt-bg), var(--alpha));
-        .hidden-box{
-            opacity: 1;
-            visibility: visible;
-        }
-    }
-
-    .hidden-box{
-        position: absolute;
-        top: -500px; left: -500px;
-        width: 240px; min-height: 120px;
-        transform: translate(15px, 15px);
-
-        background-color: rgb(var(--alt-bg));
-        border: 3px solid rgb(var(--bg-secondary));
-        border-radius: 5px;
-
-        visibility: hidden;
-        opacity: 0;
-        z-index: 1;
-
-        pointer-events: none;
-
-        transition: opacity .3s ease;
+        background-color: rgba(var(--bg-tertiary), var(--alpha));
     }
 }
 

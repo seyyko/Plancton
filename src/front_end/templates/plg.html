@@ -19,12 +19,10 @@
                 {% for day_data in plg_data.values() %}
                     {% for data in day_data %}
                         {% if "infos_supp" in data %}
-                            <div class="plg-data g-start-{{ data['infos_supp']['heure_debut'] }} g-end-{{ data['infos_supp']['heure_fin'] }} {{ data['infos_supp']['abrvt_jour'] }} {{ data['infos_supp']['abrvt_nom'] }}" onmouseenter="showInfos(this)" onclick="showInfos(this)">
+                            <div class="plg-data g-start-{{ data['infos_supp']['heure_debut'] }} g-end-{{ data['infos_supp']['heure_fin'] }} {{ data['infos_supp']['abrvt_jour'] }} {{ data['infos_supp']['abrvt_nom'] }}">
                                 <p>{{ data['nom'] }}</p>
                                 <p>{{ data['salle'] }}</p>
                                 <p>{{ data['heure_plate'] }}</p>
-
-                                <div class="hidden-box"></div>
                             </div>
                         {% endif %}
                     {% endfor %}
