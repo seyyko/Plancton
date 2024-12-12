@@ -6,17 +6,12 @@ bp = Blueprint('main', __name__)
 
 @bp.route('/')
 def index():
-    header_title = "Welcome to Plancton"
-    header_desc = "Your personal planning assistant. Stay organized, track your tasks, and manage your schedule effortlessly. Let's get started!"
-    return render_template('index.html', header_title=header_title, header_desc=header_desc)
+    return render_template('index.html', title="Home")
 
 @bp.route('/plg')
 def plg():
-    header_title = "Get Started with Plancton"
-    header_desc = "Organize your tasks and stay on top of your schedule with Plancton. Start now and take control of your day!"
     plg_data = get_plg_data()
-    return render_template('plg.html', plg_data=plg_data, header_title=header_title, header_desc=header_desc)
-
+    return render_template('plg.html', plg_data=plg_data, title="Planning")
 
 def get_plg_data():
     plg_data = scrap.main()[0]

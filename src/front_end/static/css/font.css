@@ -8,6 +8,10 @@
     text-transform: capitalize;
 }
 
+.ital{
+    font-style: italic;
+}
+
 .fw100{
     font-weight: 100;
 }
@@ -55,4 +59,12 @@
 
 .raleway{
     font-family: 'Raleway', serif, 'Times New Roman', Times;
+}
+
+.brunoAceSC{
+    font-family: 'Bruno Ace SC', serif;
+}
+
+.EBGaramond{
+    font-family: 'EB Garamond', serif;
 }

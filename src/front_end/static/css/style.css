@@ -15,7 +15,6 @@
 body{
     background-color: var(--bg-primary);
     color: var(--text-primary);
-    min-height: 200vh;
 }
 
 li{
@@ -30,52 +29,120 @@ a{
 
 
 
-/* header */
-
-#header{
-    width: 100%; height: 100vh;
-}
-
-.header-bg-box{
-    position: absolute;
-    width: 100%; height: 100vh;
-    box-shadow: inset 0 100px 10em 50px var(--text-secondary);
-}
-.header-bg{
-    position: absolute;
-    width: 100%; height: 100%;
-    object-fit: cover;
-    z-index: -1;
-}
-
-.header-box{
+#main{
     position: relative;
-
-    width: 100%;
-    padding-left: clamp(80px, 10vw, 180px);
+    width: 100%; height: 100vh;
     display: flex;
 
-    font-size: clamp(8px, 2vw, 16px);
-    /* background-color: yellow; */
+    background: url('../img/header_bg.png') 50% 50%/ cover;
+    box-shadow: inset 0 4em 10em 5em black;
 }
 
-.header-logo{
-    position: absolute;
-    width: 40px; height: 100%;
-
-    writing-mode: vertical-lr;
-    text-orientation: sideways;
-    transform: rotate(-180deg) translateX(40px);
-    
-    background-color: var(--text-secondary);
+.left-side{
+    display: flex; flex-direction: column;
+    flex: 10;
 }
 
-.header-content{
-    width: 80%; max-width: 600px;
-    padding: 15px 5px;
-    gap: 14px;
+#navbar{
+    flex: 1;
 
-    /* background-color: red; */
+    display: flex; justify-content: space-between;
+    padding: 4vh 2vw;
+    .logo{
+        display: flex;
+        justify-content: center; align-items: center;
+        font-size: clamp(16px, 4vw, 45px);
+    }
+    .menu{
+        position: relative;
+        width: 60px; height: 60px;
+
+        display: flex;
+        justify-content: center; align-items: center;
+
+        .row{
+            width: 20px; height: 60px;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: space-evenly;
+            div, a{
+                width: 8px; height: 8px;
+                background-color: white;
+                border-radius: 50%;
+
+                transition: transform .4s ease, background-color .3s ease;
+            }
+        }
+
+        &::before{
+            content: '';
+            width: 60px; height: 60px;
+            position: absolute;
+            
+        }
+    }
 }
 
+#navbar .menu:hover{
+    &::before{
+        width: 120px; height: 120px;
+    }
+    .row1 a:nth-child(2){
+        transform: translateX(-30px) scale(3.8);
+    }
+    .row1 a:nth-child(3){
+        transform: translate(-30px, 30px) scale(3.8);
+    }
+    .row2 a:nth-child(3){
+        transform: translateY(30px) scale(3.8);
+    }
+    .row1 a:nth-child(2):hover,
+    .row1 a:nth-child(3):hover,
+    .row2 a:nth-child(3):hover{
+        background-color: lime;
+    }
 
+}
+
+#content{
+    flex: 10;
+
+    display: flex; flex-direction: column;
+    justify-content: end;
+
+    h2{
+        font-size: clamp(20px, 8vw, 180px);
+        padding: 40px 10vw;
+    }
+
+    .links{
+
+        display: flex;
+        justify-content: space-around;
+        padding-block: 40px;
+    }
+}
+
+#credits{
+    flex: 1;
+
+    overflow: hidden;
+    background-color: white;
+    color: black;
+    padding-inline: clamp(10px, 3vw, 15px);
+
+    div{
+        width: 100%; height: 100vh;
+
+        display: flex;
+        align-items: center; justify-content: space-evenly;
+
+        writing-mode: sideways-lr;
+        font-size: clamp(1em, 15vw, 100px);
+
+        p{
+            height: 50vh;
+            padding-inline: 20px;
+            min-height: max-content;
+        }
+    }
+}

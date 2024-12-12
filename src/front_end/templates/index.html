@@ -1,7 +1,78 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-{% block content %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cursor_event.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/grid_template.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/plg.css') }}">
 
+    <title>Plancton | {{ title }}</title>
 
-{% endblock %}
+    <script src="{{ url_for('static', filename='js/navbar.js') }}" defer></script>
+
+</head>
+<body>
+
+    <main id="main" class="montserrat">
+
+        <div class="left-side">
+            <nav id="navbar">
+                <div class="logo brunoAceSC">
+                    <a href="{{ url_for('main.index') }}">PLANCTON</a>
+                </div>
+                <div class="menu">
+                    <div class="row row1">
+                        <div></div>
+                        <a href="#"></a>
+                        <a href="#"></a>
+                    </div>
+                    <div class="row row2">
+                        <div></div>
+                        <div></div>
+                        <a href="#"></a>
+                    </div>
+                    <div class="row row3">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </div>
+            </nav>
+    
+            <div id="content">
+                <h2>Your tasks, streamlined.</h2>
+                <ul class="links uppercase fw300">
+                    <li>
+                        <a class="underline_event" href="{{ url_for('main.plg') }}">start</a>
+                    </li>
+                    <li>
+                        <a class="underline_event" href="#">services</a>
+                    </li>
+                    <li>
+                        <a class="underline_event" href="#">about</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <aside id="credits">
+            <div class="EBGaramond fw300 ital">
+                <p>&copy; hchamrouk</p>
+                <p>&copy; hchamrouk</p>
+            </div>
+        </aside>
+    </main>
+
+    {% block content %}
+    {% endblock %}
+
+</body>
+</html>
