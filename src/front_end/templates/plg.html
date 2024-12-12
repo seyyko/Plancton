@@ -2,37 +2,42 @@
 
 {% block content %}
 
-<section id="plg-section">
-    <div class="week-days montserrat bold">
-        <p>lundi</p>
-        <p>mardi</p>
-        <p>mercredi</p>
-        <p>jeudi</p>
-        <p>vendredi</p>
-        <p>samedi</p>
-        <p>dimanche</p>
-    </div>
-    <div class="plg montserrat fw300">
-        {% if plg_data is iterable and plg_data|length > 0 %}
-            {% for day_data in plg_data.values() %}
-                {% for data in day_data %}
-                    {% if "infos_supp" in data %}
-                        <div class="plg-data g-start-{{ data['infos_supp']['heure_debut'] }} g-end-{{ data['infos_supp']['heure_fin'] }} {{ data['infos_supp']['abrvt_jour'] }} {{ data['infos_supp']['abrvt_nom'] }}">
-                            <p>{{ data['nom'] }}</p>
-                            <p>{{ data['salle'] }}</p>
-                            <p>{{ data['heure_plate'] }}</p>
-                        </div>
-                    {% endif %}
+<section id="plg-section" class="montserrat">
+    <h2><imp>Planning</imp> of the week:</h2>
+    <div class="plg-content">
+        <div class="week-days bold">
+            <p>lundi</p>
+            <p>mardi</p>
+            <p>mercredi</p>
+            <p>jeudi</p>
+            <p>vendredi</p>
+            <p>samedi</p>
+            <p>dimanche</p>
+        </div>
+        <div class="plg fw300 noise">
+            {% if plg_data is iterable and plg_data|length > 0 %}
+                {% for day_data in plg_data.values() %}
+                    {% for data in day_data %}
+                        {% if "infos_supp" in data %}
+                            <div class="plg-data g-start-{{ data['infos_supp']['heure_debut'] }} g-end-{{ data['infos_supp']['heure_fin'] }} {{ data['infos_supp']['abrvt_jour'] }} {{ data['infos_supp']['abrvt_nom'] }}" onmouseenter="showInfos(this)" onclick="showInfos(this)">
+                                <p>{{ data['nom'] }}</p>
+                                <p>{{ data['salle'] }}</p>
+                                <p>{{ data['heure_plate'] }}</p>
+
+                                <div class="hidden-box"></div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 {% endfor %}
-            {% endfor %}
-        {% endif %}
-        <!-- <div class="g-start-08h00 g-end-19h30 lun border"></div>
-        <div class="g-start-08h00 g-end-19h30 mar border"></div>
-        <div class="g-start-08h00 g-end-19h30 mer border"></div>
-        <div class="g-start-08h00 g-end-19h30 jeu border"></div>
-        <div class="g-start-08h00 g-end-19h30 ven border"></div>
-        <div class="g-start-08h00 g-end-19h30 sam border"></div>
-        <div class="g-start-08h00 g-end-19h30 dim border"></div> -->
+            {% endif %}
+            <!-- <div class="g-start-08h00 g-end-19h30 lun border"></div>
+            <div class="g-start-08h00 g-end-19h30 mar border"></div>
+            <div class="g-start-08h00 g-end-19h30 mer border"></div>
+            <div class="g-start-08h00 g-end-19h30 jeu border"></div>
+            <div class="g-start-08h00 g-end-19h30 ven border"></div>
+            <div class="g-start-08h00 g-end-19h30 sam border"></div>
+            <div class="g-start-08h00 g-end-19h30 dim border"></div> -->
+        </div>
     </div>
 </section>
 

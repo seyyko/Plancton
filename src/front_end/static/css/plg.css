@@ -1,16 +1,25 @@
 
 
 #plg-section{
-    margin-top: 100px;
+    h2{
+        font-size: clamp(30px, 10vw, 120px);
+        padding: 40px 3vw 0;
+    }
+}
+
+.plg-content{
     transform: scale(.9);
+    border: 1px solid rgb(var(--alt-bg));
+    border-radius: 5px;
+    overflow: hidden;
 }
 
 .week-days{
     display: flex; justify-content: space-evenly;
     width: 100%; padding-block: 10px;
-    padding-inline: 20px;
+    padding-inline: 5px;
 
-    background-color: var(--bg-primary);
+    background-color: rgb(var(--alt-bg));
     & p{
         flex: 1;
         text-align: center;
@@ -22,7 +31,7 @@
     width: 100%;
     left: 50%;
     transform: translate(-50%);
-    padding: 20px;
+    padding: 5px;
 
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -30,20 +39,45 @@
 
     gap: 1px .3vw;
     overflow: hidden;
-    background-color: var(--bg-primary);
-    border: 1px solid white;
+    background-color: rgb(var(--bg-secondary));
     p {
         width: 100%;
         text-align: center;
-        color: black;
         font-size: clamp(6px, 1vw, 16px);
         padding: 5px 2px; 
     }
 }
 
 .plg-data{
-    background-color: var(--bg-secondary);
-    border-radius: 10px;
+    background-color: rgb(var(--alt-bg));
+    border-radius: 5px;
+    cursor: default;
+    &:hover{
+        background-color: rgba(var(--alt-bg), var(--alpha));
+        .hidden-box{
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+
+    .hidden-box{
+        position: absolute;
+        top: -500px; left: -500px;
+        width: 240px; min-height: 120px;
+        transform: translate(15px, 15px);
+
+        background-color: rgb(var(--alt-bg));
+        border: 3px solid rgb(var(--bg-secondary));
+        border-radius: 5px;
+
+        visibility: hidden;
+        opacity: 0;
+        z-index: 1;
+
+        pointer-events: none;
+
+        transition: opacity .3s ease;
+    }
 }
 
 .lun{
