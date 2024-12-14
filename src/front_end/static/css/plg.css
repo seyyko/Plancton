@@ -133,20 +133,21 @@
     width: 90%;
     display: flex;
     margin-inline: auto;
-    font-size: clamp(8px, 2vw, 16px);
     p{
         flex: 5;
         display: flex;
 
+        font-size: clamp(4px, 1vw, 16px);
         text-align: left;
-        word-break: break-all;
+        word-break: normal;
     }
     span{
         flex: 1;
         display: flex;
         justify-content: center; align-items: center;
 
-        background-color: rgb(var(--bg-tertiary));
+        font-size: clamp(8px, 1vw, 16px);
+        background-color: rgb(var(--bg-tertiary));  
         border-radius: 10px;
         transition: background-color .4s ease;
         &:hover{
@@ -267,3 +268,9 @@
 .comm{background-color: lightcyan;}
 .anglais{background-color: pink;}
 .tutorat, .soutien, .default{background-color: white;} */
+
+@media screen and (max-width: 780px) {
+    .plg-content{
+        transform: scale(1);
+    }
+}
