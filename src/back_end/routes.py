@@ -28,7 +28,6 @@ def get_plg_data():
             h2  = hp[1]
 
             data['infos_supp'] = {'abrvt_jour': jour, 'abrvt_nom': nom, 'heure_debut': h1, 'heure_fin': h2}
-    print("plg_data: \n\n\n", plg_data)
     return plg_data
 
 
