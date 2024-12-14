@@ -1,8 +1,12 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, jsonify
 import scrap.scraping as scrap
+import json, os
 
 # create a Blueprint
 bp = Blueprint('main', __name__)
+
+base_dir = os.path.dirname(os.path.abspath(__file__))
+json_file_path = os.path.join(base_dir, 'list_data.json')
 
 @bp.route('/')
 def index():
@@ -12,6 +16,32 @@ def index():
 def plg():
     plg_data = get_plg_data()
     return render_template('plg.html', plg_data=plg_data, title="Planning")
+
+@bp.route('/saveList', methods=['POST'])
+def save_list():
+    data = request.get_json()
+
+    my_list = data.get('list', [])
+
+    try:
+        with open(json_file_path, 'w') as f:
+            json.dump(my_list, f, indent=4)
+        return jsonify({"message": "List successfully saved!"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@bp.route('/getList', methods=['GET'])
+def get_list():
+    try:
+        if os.path.exists(json_file_path):
+            with open(json_file_path, 'r') as f:
+                homeworksList = json.load(f)
+            return jsonify({"list": homeworksList}), 200
+        else:
+            return jsonify({"message": "No list found."}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
 
 def get_plg_data():
     plg_data = scrap.main()[0]

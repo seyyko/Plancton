@@ -22,14 +22,10 @@ Wtable = {'Monday': 'Lundi',
 
 
 def delSpace(char:str) -> str:
-    """Supprime les espaces en première et dernière 
-    position d'une chaine de caractères."""
     return " ".join(char.split())
 
 
 def howManyClassesWeek(d:dict) -> int:
-    """Donne une valeur (entière) qui correspond
-    au nombres de cours qu'il y a cette semaine."""
     sum = 0
     for day in DAYS:
         sum += len(d[day])
@@ -37,31 +33,20 @@ def howManyClassesWeek(d:dict) -> int:
 
 
 def howManyHours(all_class:list) -> str:
-    """Donne le nombre d'heure / min qu'il y a
-    dans une journée de cours.
-    ex : 07h30 (7h30 de cours au total)"""
     total = 0
     for classes in all_class:
         hour = classes['heure']
-        """Dans cette situation, l'heure du début des 
-        cours est toujours plus petit que l'heure
-        de fin des cours.
-
-        Cependant, c'est pas le cas pour les minutes,
-        prennons comme exemple un cours de 45 min.
-        Il commence à 15h00, et finis à 16h45,
-        On a bien 45 > 00.  """
-        # Premier cas :
+        
         if hour[0][1] < hour[1][1]:
             h1 = hour[0][0]+hour[0][1]
             h2 = hour[1][0]+hour[1][1]
-        # Deuxieme cas :
+        # min. start > min. end (e.g. start at 14h15 and end at 15h);
         else:
             h1 = hour[0][0]+hour[1][1]
             h2 = hour[1][0]+hour[0][1]
         total += int(h2)-int(h1)
     total = str(total)
-    # On reformate le texte et on l'envoie.
+    
     return total[:2] + 'h' + total[2:] if len(total) > 3 else total[0] + 'h' + total[1:]
 
 def howManyHoursWeek(d:dict):
@@ -84,7 +69,6 @@ def getDay():
 
 
 def getSmoothHour(l:list):
-    """Retourne l'heure afficher comme cela : 00h00"""
     hours = f"{l[0][0]}h{l[0][1]} - {l[1][0]}h{l[1][1]}"
     return hours
 
@@ -93,6 +77,8 @@ def isItWeekA(date:str):
     file = open(oscillator_file, "r")
     data = eval(file.read())
     file.close()
+
+    print(data)
 
     if date in data:
         return data[date]
@@ -103,7 +89,6 @@ def isItWeekA(date:str):
     
 
 async def scrap(pw: Playwright):
-    # Fichier dans lequel on va stocker l'enploi du temps (sous forme de dictionnaire).
     file = open(events_file, "r")
     data = eval(file.read())
     file.close()
@@ -111,32 +96,27 @@ async def scrap(pw: Playwright):
     if data is not None and data[1][-1]['jour'] == getDay():
         return data
 
-    # On initialise le navigateur web.
     chromium = pw.chromium
     browser = await chromium.launch()
 
-    # On lui donne quelques attributs.
     context = await browser.new_context(viewport={"width": 1920, "height": 1080})
     page = await context.new_page()
 
-    # Puis on va sur la page que l'on souhaite.
     if isItWeekA(DATE):
         await page.goto(URL_A)
     else:
         await page.goto(URL_B)
-    await page.wait_for_timeout(5000) # On attends que le contenu JS se charge.
+    await page.wait_for_timeout(5000)
 
     parsed = []
     event_boxes = page.locator(XML_PATH)
 
-    # Et on commence à grignoter :^).
     for box in await event_boxes.element_handles():
         data = await box.query_selector(".eventText")
-        data = await data.get_attribute("aria-label") # Avoir le nom/salle/heure de chaque cours.
+        data = await data.get_attribute("aria-label")
 
-        id = await box.get_attribute("style") # On repère chaque jour avec un id différent.
+        id = await box.get_attribute("style")
 
-        # On utilise regex pour garder ce qui nous interesse.
         pattern_data = 'null'
         regex_data = re.split(pattern_data, data)
 
@@ -150,7 +130,6 @@ async def scrap(pw: Playwright):
 
         classroom = delSpace(regex_data[1]) if delSpace(regex_data[1]) != 'Cours en ligne (CEL) IUTMS' else 'Cours en ligne'
 
-        # Finalement on stocke tout dans un dictionnaire.
         parsed.append({
             "id":int(regex_id),
             "nom":delSpace(regex_data[0]),
@@ -159,7 +138,6 @@ async def scrap(pw: Playwright):
             "heure_plate":getSmoothHour(list_hour)
         })
 
-    # Et pour chaque jour on associe un id.
     id_selector = [-1, -1, -1, -1, -1, -1, -1]
     j = 0
     for event in parsed:
@@ -167,13 +145,13 @@ async def scrap(pw: Playwright):
         if id not in id_selector:
             id_selector[j] = id
             j += 1
-    # On crée un table associative entre l'id et le jour.
+
     Rtable = {}
     for i, ids in enumerate(id_selector):
         if ids == -1:
             break
         Rtable[ids] = DAYS[i]
-    # On crée le dictionnaire qui stockera l'entiereté de la semaine.
+        
     dict_event = {'Lundi': [],
                     'Mardi': [],
                     'Mercredi': [],
@@ -181,18 +159,17 @@ async def scrap(pw: Playwright):
                     'Vendredi': [],
                     'Samedi': [],
                     'Dimanche': []}
-    # On met toute les infos de chaque jours dans le jour qui correspond.
+    
     for event in parsed:
         id = event["id"]
         dict_event[Rtable[id]].append(event)
-    # Et puis on ajoute quelques informations supplémentaire.
+        
     for day in dict_event:
         dict_event[day].append({'jour': day, 'total_classes': len(dict_event[day]), 'total_heures': howManyHours(dict_event[day])})
 
     today = getDay()
     today_classes = dict_event[today]
     
-    # Finalement on stocke le tout dans un fichier .txt .
     tup = (dict_event, today_classes)
     file = open(events_file, "w")
     file.write(str(tup))

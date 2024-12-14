@@ -45,6 +45,8 @@ imp{
 #main{
     position: relative;
     width: 100%; height: 100vh;
+    min-height: 700px;
+
     display: flex; flex-direction: column;
 
     background: url('../img/header_bg.png') 50% 50%/ cover;

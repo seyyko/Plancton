@@ -17,45 +17,51 @@
         <div class="plg fw300 noise">
             {% if plg_data is iterable and plg_data|length > 0 %}
                 {% for day_data in plg_data.values() %}
+                    {% set outer_loop = loop %}
                     {% for data in day_data %}
                         {% if "infos_supp" in data %}
-                            <div class="plg-data g-start-{{ data['infos_supp']['heure_debut'] }} g-end-{{ data['infos_supp']['heure_fin'] }} {{ data['infos_supp']['abrvt_jour'] }} {{ data['infos_supp']['abrvt_nom'] }}">
+                            <div id="{{ outer_loop.index }}-{{ loop.index }}" class="plg-data g-start-{{ data['infos_supp']['heure_debut'] }} g-end-{{ data['infos_supp']['heure_fin'] }} {{ data['infos_supp']['abrvt_jour'] }} {{ data['infos_supp']['abrvt_nom'] }}">
                                 <div id="homework-meter">
                                     <p></p>
                                 </div>
                                 <div class="no-overflow">
-                                    <div class="scroll-content" onclick="switchInfoDisplay(this)">
+                                    <div class="scroll-content">
                                         <div class="course-info info-display-func">
                                             <p>{{ data['nom'] }}</p>
                                             <p>{{ data['salle'] }}</p>
                                             <p>{{ data['heure_plate'] }}</p>
                                         </div>
                                         <div class="homeworks-info">
-                                            <p>c'est l'heure des devoirs !</p>
-                                            <p>c'est l'heure des devoirs !</p>
-                                            <p>c'est l'heure des devoirs !</p>
-                                            <!-- <p>c'est l'heure des devoirs !</p>
-                                            <p>c'est l'heure des devoirs !</p>
-                                            <p>c'est l'heure des devoirs !</p>
-                                            <p>c'est l'heure des devoirs !</p>
-                                            <p>c'est l'heure des devoirs !</p>
-                                            <p>c'est l'heure des devoirs !</p>
-                                            <p>c'est l'heure des devoirs !</p>
-                                            <p>c'est l'heure des devoirs !</p>
-                                            <p>c'est l'heure des devoirs !</p>
-                                            <p>c'est l'heure des devoirs !</p>
-                                            <p>c'est l'heure des devoirs !</p>
-                                            <p>c'est l'heure des devoirs !</p>
-                                            <p>c'est l'heure des devoirs !</p>
-                                            <p>c'est l'heure des devoirs !</p>
-                                            <p>c'est l'heure des devoirs !</p>
-                                            <p>c'est l'heure des devoirs !</p>
-                                            <p>c'est l'heure des devoirs !</p>
-                                            <p>c'est l'heure des devoirs !</p>
-                                            <p>c'est l'heure des devoirs !</p>
-                                            <p>c'est l'heure des devoirs !</p>
-                                            <p>c'est l'heure des devoirs !</p>
-                                            <p>c'est l'heure des devoirs !</p> -->
+                                            <div class="homeworks">
+                                                <!-- <p>c'est l'heure des devoirs !</p>
+                                                <p>c'est l'heure des devoirs !</p>
+                                                <p>c'est l'heure des devoirs !</p> -->
+                                                <!-- <p>c'est l'heure des devoirs !</p>
+                                                <p>c'est l'heure des devoirs !</p>
+                                                <p>c'est l'heure des devoirs !</p>
+                                                <p>c'est l'heure des devoirs !</p>
+                                                <p>c'est l'heure des devoirs !</p>
+                                                <p>c'est l'heure des devoirs !</p>
+                                                <p>c'est l'heure des devoirs !</p>
+                                                <p>c'est l'heure des devoirs !</p>
+                                                <p>c'est l'heure des devoirs !</p>
+                                                <p>c'est l'heure des devoirs !</p>
+                                                <p>c'est l'heure des devoirs !</p>
+                                                <p>c'est l'heure des devoirs !</p>
+                                                <p>c'est l'heure des devoirs !</p>
+                                                <p>c'est l'heure des devoirs !</p>
+                                                <p>c'est l'heure des devoirs !</p>
+                                                <p>c'est l'heure des devoirs !</p>
+                                                <p>c'est l'heure des devoirs !</p>
+                                                <p>c'est l'heure des devoirs !</p>
+                                                <p>c'est l'heure des devoirs !</p>
+                                                <p>c'est l'heure des devoirs !</p>
+                                                <p>c'est l'heure des devoirs !</p>
+                                                <p>c'est l'heure des devoirs !</p> -->
+                                            </div>
+                                            <div id="add-homework">
+                                                <p>add a homework for this course</p>
+                                            </div>
                                         </div>
     
                                         <div class="switch"></div>
