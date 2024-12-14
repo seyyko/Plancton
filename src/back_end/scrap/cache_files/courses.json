@@ -1,0 +1,60 @@
+[
+    {
+        "Lundi": [
+            {
+                "jour": "Lundi",
+                "total_classes": 0,
+                "total_heures": "0h00"
+            }
+        ],
+        "Mardi": [
+            {
+                "jour": "Mardi",
+                "total_classes": 0,
+                "total_heures": "0h00"
+            }
+        ],
+        "Mercredi": [
+            {
+                "jour": "Mercredi",
+                "total_classes": 0,
+                "total_heures": "0h00"
+            }
+        ],
+        "Jeudi": [
+            {
+                "jour": "Jeudi",
+                "total_classes": 0,
+                "total_heures": "0h00"
+            }
+        ],
+        "Vendredi": [
+            {
+                "jour": "Vendredi",
+                "total_classes": 0,
+                "total_heures": "0h00"
+            }
+        ],
+        "Samedi": [
+            {
+                "jour": "Samedi",
+                "total_classes": 0,
+                "total_heures": "0h00"
+            }
+        ],
+        "Dimanche": [
+            {
+                "jour": "Dimanche",
+                "total_classes": 0,
+                "total_heures": "0h00"
+            }
+        ]
+    },
+    [
+        {
+            "jour": "Samedi",
+            "total_classes": 0,
+            "total_heures": "0h00"
+        }
+    ]
+]
