@@ -177,6 +177,7 @@
 
     p{
         padding-inline: 5px;
+        font-weight: bold;
     }
 
     &:hover{
