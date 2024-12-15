@@ -13,7 +13,9 @@ This project aims to recreate the IUT planning website with a modern interface, 
 - **Frontend**: HTML, CSS, JavaScript
 - **Backend**: Flask
 - **Web Scraping**: Python
-- **Client-Side Storage**: IndexedDB / localStorage
+- **Storage**:
+   - IndexedDB (client-side) : save preferences of a user.
+   - Flask-SQLAlchemy (MySQL, server-side) : save the planning week for a class.
 
 ## Installation
 To run this project locally, follow these steps:
