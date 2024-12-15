@@ -22,7 +22,7 @@ async function getList() {
   try {
     const response = await fetch("/getList");
     const data = await response.json();
-
+    console.log("Received data from server:", data); // Debug
     if (data.list) {
       homeworksList = data.list;
       addHomeworkWObtn(homeworksList);
