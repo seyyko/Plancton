@@ -21,28 +21,48 @@ This project aims to recreate the IUT planning website with a modern interface, 
 To run this project locally, follow these steps:
 
 1. Clone the repository:
+   
    ```bash
    git clone https://github.com/seyyko/Plancton.git
    cd Plancton
    ```
 
 2. Create a virtual environment:
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate
-   ```
+   
+   - linux:
+     
+      ```bash
+      python3 -m venv venv
+      source venv/bin/activate  (linux)
+      ```
+   - windows:
+     
+     ```bash
+      python -m venv venv
+      .\venv\Scripts\Activate.ps1 (windows)
+      ```
+     
 
 3. Install the required dependencies:
+   
    ```bash
    pip install -r requirements.txt
    ```
 
+You might need to do this to install Playwright's web browser:
+
+   ```bash
+   playwright install
+   ```
+
 4. Run the backend server:
+   
    ```bash
    python src/back_end/app.py
    ```
 
 5. Open the front-end in your browser:
+   
    - The application will be available on all addresses (0.0.0.0:80)
    - in particular on:
       - http://127.0.0.1:80
