@@ -64,7 +64,7 @@
     width: clamp(10px, 2vw, 20px); height: clamp(10px, 2vw, 20px);
     font-size: clamp(8px, 1vw, 16px);
     border-radius: 50%;
-    background-color: red;
+    background-color: rgb(var(--hover-bg));
     position: absolute;
     top: -5px; right: -5px;
     z-index: 2;

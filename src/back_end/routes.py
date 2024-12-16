@@ -9,6 +9,10 @@ bp = Blueprint('main', __name__)
 def index():
     return render_template('index.html', title="Home")
 
+@bp.route('/sync', methods=['POST'])
+def sync_homeworks():
+    pass
+
 @bp.route('/plg')
 def plg():
     plg_data = get_plg_data()

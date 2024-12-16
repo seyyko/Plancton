@@ -1,7 +1,20 @@
-let homeworkList = {};
+let homeworkList = JSON.parse(localStorage.getItem('homeworkList')) || {};
+
+function clearList() {
+  localStorage.removeItem('homeworkList');
+  console.log("list have been removed succesfully !");
+}
+
+// Save the homework list to the database and sync with the server
+function saveList() {
+  localStorage.setItem("homeworkList", JSON.stringify(homeworkList));
+  homeworkList = JSON.parse(localStorage.getItem('homeworkList'));
+  console.log("list have been saved succesfully !");
+  //syncWithServer();           // Synchronize the data with the server
+}
 
 // Function to clear the database on Mondays
-function clearDatabaseOnMonday() {
+function clearListOnMonday() {
   const today = new Date();
   const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
 
@@ -12,11 +25,11 @@ function clearDatabaseOnMonday() {
 
       // If the database hasn't been cleared today
       if (lastClearDate !== todayDateString) {
-          clearDatabase(); // Clear the database
+          clearList(); // Clear the data (localStorage)
           localStorage.setItem("lastClearDate", todayDateString); // Update the date
-          console.log("Database cleared for the week.");
+          console.log("Data cleared for the week.");
       } else {
-          console.log("Database already cleared today.");
+          console.log("Data already cleared today.");
       }
   }
 }
@@ -24,38 +37,21 @@ function clearDatabaseOnMonday() {
 // Initialize the app on document load
 document.addEventListener("DOMContentLoaded", async () => {
   try {
-    await initializeDatabase();  // Wait for the database to be ready
-    clearDatabaseOnMonday();     // Ensure the database is cleared on Monday
-    await loadHomeworksFromDB(); // Load homework data from the database
-    updateHomeworkMeter();       // Update the homework count display
+      clearListOnMonday();   // Clear the database on Mondays
+      updateHomeworkDisplay(homeworkList);
+
+      // // Synchronize every 5 minutes (300000ms)
+      // setInterval(async () => {
+      //   syncWithServer();
+      // }, 300000);  // 5 minutes
   } catch (error) {
-    console.error("Error during initialization:", error);
+      console.error("Error during initialization:", error);
   }
 });
 
-// Load homeworks from IndexedDB
-async function loadHomeworksFromDB() {
-  const transaction = db.transaction(["homeworks"], "readonly");
-  const store = transaction.objectStore("homeworks");
-
-  const request = store.getAll();
-  request.onsuccess = () => {
-    const data = request.result;
-    data.forEach((item) => {
-      homeworkList[item.id] = item.tasks; // Store tasks for each course
-    });
-    // Update the display of homeworks without any buttons
-    updateHomeworkDisplay(homeworkList);
-  };
-
-  request.onerror = (event) => {
-    console.error("Error loading homeworks:", event.target.error);
-  };
-}
-
-// Save the homework list to the database
-function saveListToDB() {
-  addHomeworks(homeworkList); // Save the homework list using the function from indexeddbHandler.js
+// Get the number of homeworks in a course
+function getHomeworkCount(homeworks) {
+  return homeworks.children.length; // Return the number of child elements (homework items)
 }
 
 // Update the homework meter for each course (display homework count)
@@ -72,15 +68,10 @@ function updateHomeworkMeter() {
     homeworkMeter.style.display = homeworkCount == 0 ? "none" : "flex"; // Hide if no homework
   });
 
-  saveListToDB(); // Save homework list to DB after updating
+  saveList(); // Save homework list to localStorage
 }
 
-// Get the number of homeworks in a course
-function getHomeworkCount(homeworks) {
-  return homeworks.children.length; // Return the number of child elements (homework items)
-}
-
-// Handle the plugin data (each course's homework list)
+// Handle the planning data (each course's homework list)
 const planningDataElements = document.querySelectorAll(".plg-data");
 planningDataElements.forEach((data) => {
   const scrollContent = data.querySelector(".no-overflow .scroll-content");
