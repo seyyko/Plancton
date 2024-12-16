@@ -44,7 +44,7 @@ def getSmoothHour(l: list):
     return f"{l[0][0]}h{l[0][1]} - {l[1][0]}h{l[1][1]}"
 
 def isItWeekA(date: datetime.date) -> bool:
-    date_ref = datetime.date(2024, 12, 6)
+    date_ref = datetime.date(2024, 6, 12)
     weeks_difference = (date - date_ref).days // 7
     print(weeks_difference % 2 == 0)
     return weeks_difference % 2 == 0
@@ -53,8 +53,8 @@ async def scrap(pw: Playwright):
     if os.path.exists(courses_file) and os.path.getsize(courses_file) > 0:
         with open(courses_file, "r") as file:
             data = json.load(file)
-        # if data[1][-1]['jour'] == getDay():
-        return data
+        if data[1][-1]['jour'] == getDay():
+            return data
 
 
     chromium = pw.chromium

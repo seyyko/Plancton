@@ -3,7 +3,7 @@
         "Lundi": [
             {
                 "id": 0,
-                "nom": "Initiation au dev.",
+                "nom": "Intro. Economie",
                 "salle": "Cours en ligne",
                 "heure": [
                     [
@@ -35,22 +35,6 @@
             },
             {
                 "id": 0,
-                "nom": "Intro. Economie",
-                "salle": "Cours en ligne",
-                "heure": [
-                    [
-                        "10",
-                        "30"
-                    ],
-                    [
-                        "11",
-                        "30"
-                    ]
-                ],
-                "heure_plate": "10h30 - 11h30"
-            },
-            {
-                "id": 0,
                 "nom": "Initiation au dev.",
                 "salle": "TD 4.06",
                 "heure": [
@@ -67,42 +51,42 @@
             },
             {
                 "jour": "Lundi",
-                "total_classes": 4,
-                "total_heures": "5h00"
+                "total_classes": 3,
+                "total_heures": "4h00"
             }
         ],
         "Mardi": [
             {
                 "id": 308,
                 "nom": "Intro. Economie",
-                "salle": "TD1.10",
+                "salle": "Prefab 4",
+                "heure": [
+                    [
+                        "08",
+                        "00"
+                    ],
+                    [
+                        "09",
+                        "45"
+                    ]
+                ],
+                "heure_plate": "08h00 - 09h45"
+            },
+            {
+                "id": 308,
+                "nom": "Intro B.D.",
+                "salle": "TD 4.06",
                 "heure": [
                     [
                         "10",
                         "15"
                     ],
                     [
-                        "12",
-                        "00"
-                    ]
-                ],
-                "heure_plate": "10h15 - 12h00"
-            },
-            {
-                "id": 308,
-                "nom": "Intro. archi.",
-                "salle": "Prefab 4",
-                "heure": [
-                    [
-                        "15",
+                        "13",
                         "15"
-                    ],
-                    [
-                        "16",
-                        "45"
                     ]
                 ],
-                "heure_plate": "15h15 - 16h45"
+                "heure_plate": "10h15 - 13h15"
             },
             {
                 "id": 308,
@@ -123,30 +107,14 @@
             {
                 "jour": "Mardi",
                 "total_classes": 3,
-                "total_heures": "5h15"
+                "total_heures": "6h45"
             }
         ],
         "Mercredi": [
             {
                 "id": 617,
-                "nom": "Dev. interfaces web",
-                "salle": "Salle 52",
-                "heure": [
-                    [
-                        "08",
-                        "00"
-                    ],
-                    [
-                        "10",
-                        "00"
-                    ]
-                ],
-                "heure_plate": "08h00 - 10h00"
-            },
-            {
-                "id": 617,
-                "nom": "Initiation au dev.",
-                "salle": "Prefab 2",
+                "nom": "Outils maths. fondamentaux",
+                "salle": "TD1.07",
                 "heure": [
                     [
                         "10",
@@ -160,96 +128,80 @@
                 "heure_plate": "10h15 - 12h15"
             },
             {
-                "id": 617,
-                "nom": "Intro. Economie",
-                "salle": "TD 4.06",
-                "heure": [
-                    [
-                        "13",
-                        "45"
-                    ],
-                    [
-                        "15",
-                        "30"
-                    ]
-                ],
-                "heure_plate": "13h45 - 15h30"
-            },
-            {
                 "jour": "Mercredi",
-                "total_classes": 3,
-                "total_heures": "5h45"
+                "total_classes": 1,
+                "total_heures": "2h00"
             }
         ],
         "Jeudi": [
             {
                 "id": 926,
-                "nom": "Intro. archi.",
-                "salle": "Prefab 1",
+                "nom": "Intro. Economie",
+                "salle": "TD 4.06",
                 "heure": [
                     [
-                        "09",
+                        "08",
                         "15"
                     ],
                     [
                         "10",
-                        "45"
+                        "00"
                     ]
                 ],
-                "heure_plate": "09h15 - 10h45"
+                "heure_plate": "08h15 - 10h00"
             },
             {
                 "id": 926,
-                "nom": "Initiation au dev.",
-                "salle": "TD 4.06",
+                "nom": "Intro B.D.",
+                "salle": "Salle 44",
                 "heure": [
                     [
-                        "11",
-                        "00"
+                        "10",
+                        "15"
                     ],
                     [
                         "13",
-                        "00"
+                        "15"
                     ]
                 ],
-                "heure_plate": "11h00 - 13h00"
+                "heure_plate": "10h15 - 13h15"
             },
             {
                 "id": 926,
                 "nom": "Outils maths. fondamentaux",
-                "salle": "Prefab 1",
+                "salle": "Prefab 2",
                 "heure": [
                     [
-                        "14",
+                        "15",
                         "30"
                     ],
                     [
-                        "16",
+                        "17",
                         "30"
                     ]
                 ],
-                "heure_plate": "14h30 - 16h30"
+                "heure_plate": "15h30 - 17h30"
             },
             {
                 "id": 926,
-                "nom": "Dev. interfaces web - test",
-                "salle": "Salle 44",
+                "nom": "Soutien Algo-Prog",
+                "salle": "Prefab 1",
                 "heure": [
                     [
                         "17",
-                        "15"
+                        "30"
                     ],
                     [
-                        "18",
+                        "19",
                         "30"
                     ]
                 ],
-                "heure_plate": "17h15 - 18h30"
+                "heure_plate": "17h30 - 19h30"
             },
             {
                 "jour": "Jeudi",
                 "total_classes": 4,
-                "total_heures": "6h45"
+                "total_heures": "8h45"
             }
         ],
         "Vendredi": [
@@ -259,15 +211,15 @@
                 "salle": "TD1.08",
                 "heure": [
                     [
-                        "10",
-                        "45"
+                        "09",
+                        "00"
                     ],
                     [
-                        "12",
-                        "15"
+                        "10",
+                        "30"
                     ]
                 ],
-                "heure_plate": "10h45 - 12h15"
+                "heure_plate": "09h00 - 10h30"
             },
             {
                 "id": 1234,
@@ -286,25 +238,9 @@
                 "heure_plate": "14h00 - 16h00"
             },
             {
-                "id": 1234,
-                "nom": "Outils maths. fondamentaux",
-                "salle": "Prefab 1",
-                "heure": [
-                    [
-                        "16",
-                        "15"
-                    ],
-                    [
-                        "18",
-                        "15"
-                    ]
-                ],
-                "heure_plate": "16h15 - 18h15"
-            },
-            {
                 "jour": "Vendredi",
-                "total_classes": 3,
-                "total_heures": "5h30"
+                "total_classes": 2,
+                "total_heures": "3h30"
             }
         ],
         "Samedi": [
@@ -324,9 +260,57 @@
     },
     [
         {
-            "jour": "Dimanche",
-            "total_classes": 0,
-            "total_heures": "0h00"
+            "id": 0,
+            "nom": "Intro. Economie",
+            "salle": "Cours en ligne",
+            "heure": [
+                [
+                    "08",
+                    "00"
+                ],
+                [
+                    "09",
+                    "00"
+                ]
+            ],
+            "heure_plate": "08h00 - 09h00"
+        },
+        {
+            "id": 0,
+            "nom": "Intro. archi.",
+            "salle": "Cours en ligne",
+            "heure": [
+                [
+                    "09",
+                    "15"
+                ],
+                [
+                    "10",
+                    "15"
+                ]
+            ],
+            "heure_plate": "09h15 - 10h15"
+        },
+        {
+            "id": 0,
+            "nom": "Initiation au dev.",
+            "salle": "TD 4.06",
+            "heure": [
+                [
+                    "14",
+                    "15"
+                ],
+                [
+                    "16",
+                    "15"
+                ]
+            ],
+            "heure_plate": "14h15 - 16h15"
+        },
+        {
+            "jour": "Lundi",
+            "total_classes": 3,
+            "total_heures": "4h00"
         }
     ]
 ]
