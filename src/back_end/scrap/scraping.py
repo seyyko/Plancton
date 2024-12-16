@@ -53,8 +53,8 @@ async def scrap(pw: Playwright):
     if os.path.exists(courses_file) and os.path.getsize(courses_file) > 0:
         with open(courses_file, "r") as file:
             data = json.load(file)
-        if data[1][-1]['jour'] == getDay():
-            return data
+        # if data[1][-1]['jour'] == getDay():
+        return data
 
 
     chromium = pw.chromium

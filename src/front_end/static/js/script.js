@@ -1,67 +1,88 @@
-let homeworksList = {};
-getList();
+let homeworkList = {};
 
-function saveList() {
-  fetch("/saveList", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ list: homeworksList }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log("Server response:", data);
-    })
-    .catch((error) => {
-      console.error("Query error:", error);
-    });
-}
+// Function to clear the database on Mondays
+function clearDatabaseOnMonday() {
+  const today = new Date();
+  const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
 
-async function getList() {
-  try {
-    const response = await fetch("/getList");
-    const data = await response.json();
-    console.log("Received data from server:", data); // Debug
-    if (data.list) {
-      homeworksList = data.list;
-      addHomeworkWObtn(homeworksList);
-    } else {
-      console.log("No list found.");
-      return null;
-    }
-  } catch (error) {
-    console.error("Error retrieving list:", error);
-    return null;
+  // Check if it's Monday
+  if (dayOfWeek === 1) {
+      const lastClearDate = localStorage.getItem("lastClearDate");
+      const todayDateString = today.toISOString().split("T")[0]; // Format YYYY-MM-DD
+
+      // If the database hasn't been cleared today
+      if (lastClearDate !== todayDateString) {
+          clearDatabase(); // Clear the database
+          localStorage.setItem("lastClearDate", todayDateString); // Update the date
+          console.log("Database cleared for the week.");
+      } else {
+          console.log("Database already cleared today.");
+      }
   }
 }
 
-function loadHomeworkMeter() {
-  const homeworksMeter = document.querySelectorAll("#homework-meter");
-  homeworksMeter.forEach((homeworkMeter) => {
+// Initialize the app on document load
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    await initializeDatabase();  // Wait for the database to be ready
+    clearDatabaseOnMonday();     // Ensure the database is cleared on Monday
+    await loadHomeworksFromDB(); // Load homework data from the database
+    updateHomeworkMeter();       // Update the homework count display
+  } catch (error) {
+    console.error("Error during initialization:", error);
+  }
+});
+
+// Load homeworks from IndexedDB
+async function loadHomeworksFromDB() {
+  const transaction = db.transaction(["homeworks"], "readonly");
+  const store = transaction.objectStore("homeworks");
+
+  const request = store.getAll();
+  request.onsuccess = () => {
+    const data = request.result;
+    data.forEach((item) => {
+      homeworkList[item.id] = item.tasks; // Store tasks for each course
+    });
+    // Update the display of homeworks without any buttons
+    updateHomeworkDisplay(homeworkList);
+  };
+
+  request.onerror = (event) => {
+    console.error("Error loading homeworks:", event.target.error);
+  };
+}
+
+// Save the homework list to the database
+function saveListToDB() {
+  addHomeworks(homeworkList); // Save the homework list using the function from indexeddbHandler.js
+}
+
+// Update the homework meter for each course (display homework count)
+function updateHomeworkMeter() {
+  const homeworkMeters = document.querySelectorAll("#homework-meter");
+  homeworkMeters.forEach((homeworkMeter) => {
     const parent = homeworkMeter.parentNode;
     const homeworks = parent.querySelector(
       ".no-overflow .scroll-content .homeworks-info .homeworks"
     );
-    const homeworkNumber = getHomeworkNumber(homeworks);
+    const homeworkCount = getHomeworkCount(homeworks); // Get the number of homeworks
 
-    homeworkMeter.querySelector("p").innerHTML = homeworkNumber;
-    if (homeworkNumber == 0) {
-      homeworkMeter.style.display = "none";
-    } else {
-      homeworkMeter.style.display = "flex";
-    }
+    homeworkMeter.querySelector("p").innerHTML = homeworkCount; // Display the count
+    homeworkMeter.style.display = homeworkCount == 0 ? "none" : "flex"; // Hide if no homework
   });
 
-  saveList();
+  saveListToDB(); // Save homework list to DB after updating
 }
 
-function getHomeworkNumber(homeworks) {
-  return homeworks.children.length;
+// Get the number of homeworks in a course
+function getHomeworkCount(homeworks) {
+  return homeworks.children.length; // Return the number of child elements (homework items)
 }
 
-const plgDatas = document.querySelectorAll(".plg-data");
-plgDatas.forEach((data) => {
+// Handle the plugin data (each course's homework list)
+const planningDataElements = document.querySelectorAll(".plg-data");
+planningDataElements.forEach((data) => {
   const scrollContent = data.querySelector(".no-overflow .scroll-content");
   const addHomeworkBtn = data.querySelector(
     ".no-overflow .scroll-content .homeworks-info #add-homework"
@@ -69,105 +90,98 @@ plgDatas.forEach((data) => {
 
   data.addEventListener("click", (e) => {
     if (e.target.parentNode == addHomeworkBtn) {
-      addHomework(addHomeworkBtn);
+      addHomework(addHomeworkBtn); // Add homework when button is clicked
     } else if (e.target.id == "del-homework") {
-      delHomework(e.target.parentNode);
+      removeHomework(e.target.parentNode); // Remove homework when delete button is clicked
     } else {
-      switchInfoDisplay(scrollContent);
+      toggleInfoDisplay(scrollContent); // Toggle display of course/homework info
     }
   });
 });
 
-function switchInfoDisplay(btn) {
-  const courseInfo = btn.querySelector(".course-info");
-  const homeworksInfo = btn.querySelector(".homeworks-info");
+// Toggle the visibility of course and homework info
+function toggleInfoDisplay(button) {
+  const courseInfo = button.querySelector(".course-info");
+  const homeworksInfo = button.querySelector(".homeworks-info");
 
-  courseInfo.classList.toggle("info-display-func");
-  homeworksInfo.classList.toggle("info-display-func");
-  btn.classList.toggle("btn-scale-func");
+  courseInfo.classList.toggle("info-display-func");     // Toggle course info visibility
+  homeworksInfo.classList.toggle("info-display-func");  // Toggle homework info visibility
+  button.classList.toggle("btn-scale-func");            // Animate the button scaling
 }
 
-function addHomework(btn) {
-  const parent = btn.parentNode;
-  const homeworks = parent.querySelector(".homeworks");
-  const firstParent = parent.parentNode.parentNode.parentNode;
-  const courseName = firstParent.classList[4];
-  const courseId = firstParent.id;
-
-  const homework = prompt(`Add a homework : ${courseName}`);
-
-  if (homework) {
+function createHomeworkElement(homework) {
     const div = document.createElement("div");
     const span = document.createElement("span");
     const p = document.createElement("p");
 
-    p.innerText = homework;
+    p.innerText = homework; // Set the homework text
     span.id = "del-homework";
-    span.innerHTML = "x";
+    span.innerHTML = "x"; // Set the delete button
 
-    div.appendChild(p);
-    div.appendChild(span);
-
-    homeworks.appendChild(div);
-    if (!homeworksList[courseId]) {
-      homeworksList[courseId] = [];
-    }
-    homeworksList[courseId].push(homework);
-    loadHomeworkMeter();
-  }
-  // else {
-  //   console.log("canceled");
-  // }
+    div.appendChild(p);     // Append the homework text
+    div.appendChild(span);  // Append the delete button
+    return div;
 }
 
-function addHomeworkWObtn(lst) {
-  const plgDatas = document.querySelectorAll(".plg-data");
+// Add a new homework to the course
+function addHomework(button) {
+  const parent = button.parentNode;
+  const homeworks = parent.querySelector(".homeworks");
+  const courseElement = parent.closest(".plg-data"); // Find the course element
+  const courseName = courseElement.classList[4];     // Get the course name from the class
+  const courseId = courseElement.id;                 // Get the course ID
 
-  plgDatas.forEach((data) => {
-    if (data.id in lst) {
-      homeworks = data.querySelector(
+  // Prompt the user to enter the homework
+  const homework = prompt(`Add a homework for: ${courseName}`);
+
+  if (homework) {
+    // Create new elements to display the homework
+    div = createHomeworkElement(homework);
+    homeworks.appendChild(div); // Add the new homework to the course
+
+    // Ensure the course has an entry in the homeworkList
+    if (!homeworkList[courseId]) {
+      homeworkList[courseId] = [];
+    }
+    homeworkList[courseId].push(homework); // Add the homework to the list
+    updateHomeworkMeter();                 // Update the homework count display
+  }
+}
+
+// Update the homework display (for courses without buttons)
+function updateHomeworkDisplay(list) {
+  const planningDataElements = document.querySelectorAll(".plg-data");
+
+  planningDataElements.forEach((data) => {
+    if (data.id in list) {
+      const homeworksContainer = data.querySelector(
         ".no-overflow .scroll-content .homeworks-info .homeworks"
       );
 
-      homeworksList[data.id].forEach((hw) => {
-        const div = document.createElement("div");
-        const span = document.createElement("span");
-        const p = document.createElement("p");
-
-        p.innerText = hw;
-        span.id = "del-homework";
-        span.innerHTML = "x";
-
-        div.appendChild(p);
-        div.appendChild(span);
-        homeworks.appendChild(div);
-
-        loadHomeworkMeter();
+      list[data.id].forEach((homework) => {
+        div = createHomeworkElement(homework);
+        homeworksContainer.appendChild(div);
       });
     }
   });
+
+  updateHomeworkMeter(); // Update the homework count display
 }
 
-function delHomework(btn) {
-  const parent = btn.parentNode;
-  const firstParent = parent.parentNode.parentNode.parentNode.parentNode;
-  const courseId = firstParent.id;
-  const hwText = btn.querySelector("p").innerHTML;
+// Remove a homework from the course
+function removeHomework(button) {
+  const parent = button.parentNode;
+  const courseElement = parent.closest(".plg-data");        // Find the course element
+  const courseId = courseElement.id;                        // Get the course ID
+  const homeworkText = button.querySelector("p").innerHTML; // Get the homework text
 
-  if (courseId in homeworksList) {
-    for (let i = 0; i < homeworksList[courseId].length; i++) {
-      if (homeworksList[courseId][i] == hwText) {
-        homeworksList[courseId].splice(i, 1);
-        break;
-      }
-    }
+  // Remove the homework from the homework list
+  if (courseId in homeworkList) {
+    homeworkList[courseId] = homeworkList[courseId].filter(
+      (homework) => homework !== homeworkText
+    );
   }
 
-  parent.removeChild(btn);
-  loadHomeworkMeter();
+  parent.removeChild(button); // Remove the homework item from the UI
+  updateHomeworkMeter();      // Update the homework count display
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  addHomeworkWObtn(homeworksList);
-  loadHomeworkMeter();
-});
