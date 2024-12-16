@@ -1,51 +1,88 @@
 let homeworkList = JSON.parse(localStorage.getItem('homeworkList')) || {};
 
+// Clear the homework list from localStorage
 function clearList() {
   localStorage.removeItem('homeworkList');
-  console.log("list have been removed succesfully !");
+  console.log("List has been removed successfully!");
 }
 
-// Save the homework list to the database and sync with the server
+// Save the homework list to localStorage and sync with the server
 function saveList() {
   localStorage.setItem("homeworkList", JSON.stringify(homeworkList));
   homeworkList = JSON.parse(localStorage.getItem('homeworkList'));
-  console.log("list have been saved succesfully !");
-  //syncWithServer();           // Synchronize the data with the server
+  console.log("List has been saved successfully!");
+  syncWithServer(); // Sync with the server after saving
 }
 
-// Function to clear the database on Mondays
+// Clear the database on Mondays
 function clearListOnMonday() {
   const today = new Date();
   const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
 
-  // Check if it's Monday
-  if (dayOfWeek === 1) {
-      const lastClearDate = localStorage.getItem("lastClearDate");
-      const todayDateString = today.toISOString().split("T")[0]; // Format YYYY-MM-DD
+  if (dayOfWeek === 1) { // Check if it's Monday
+    const lastClearDate = localStorage.getItem("lastClearDate");
+    const todayDateString = today.toISOString().split("T")[0]; // Format YYYY-MM-DD
 
-      // If the database hasn't been cleared today
-      if (lastClearDate !== todayDateString) {
-          clearList(); // Clear the data (localStorage)
-          localStorage.setItem("lastClearDate", todayDateString); // Update the date
-          console.log("Data cleared for the week.");
-      } else {
-          console.log("Data already cleared today.");
-      }
+    if (lastClearDate !== todayDateString) { // If not cleared today
+      clearList();
+      localStorage.setItem("lastClearDate", todayDateString); // Update the clear date
+      console.log("Data cleared for the week.");
+    } else {
+      console.log("Data already cleared today.");
+    }
+  }
+}
+
+// Synchronize localStorage with the server
+async function syncWithServer() {
+  try {
+    const response = await fetch('/sync', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(homeworkList), // Send the current homework list
+    });
+
+    const result = await response.json();
+    if (response.ok) {
+      console.log(result.message);
+    } else {
+      console.error("Error syncing with server:", result.message);
+    }
+  } catch (error) {
+    console.error("Error during syncWithServer:", error);
+  }
+}
+
+// Load data from server to localStorage
+async function loadFromServer() {
+  try {
+    const response = await fetch('/load');
+    if (response.ok) {
+      const data = await response.json();
+      homeworkList = data || {}; // Load data into homeworkList
+      localStorage.setItem('homeworkList', JSON.stringify(homeworkList)); // Save to localStorage
+      updateHomeworkDisplay(homeworkList); // Update UI
+      console.log("Data loaded from server successfully.");
+    } else {
+      console.error("Error loading from server:", await response.text());
+    }
+  } catch (error) {
+    console.error("Error during loadFromServer:", error);
   }
 }
 
 // Initialize the app on document load
 document.addEventListener("DOMContentLoaded", async () => {
   try {
-      clearListOnMonday();   // Clear the database on Mondays
-      updateHomeworkDisplay(homeworkList);
+    clearListOnMonday();   // Clear the database on Mondays
+    await loadFromServer(); // Load data from server on page load
 
-      // // Synchronize every 5 minutes (300000ms)
-      // setInterval(async () => {
-      //   syncWithServer();
-      // }, 300000);  // 5 minutes
+    // Synchronize every 5 minutes (300000ms)
+    setInterval(async () => {
+      await syncWithServer();
+    }, 300000); // 5 minutes
   } catch (error) {
-      console.error("Error during initialization:", error);
+    console.error("Error during initialization:", error);
   }
 });
 
@@ -101,41 +138,39 @@ function toggleInfoDisplay(button) {
 }
 
 function createHomeworkElement(homework) {
-    const div = document.createElement("div");
-    const span = document.createElement("span");
-    const p = document.createElement("p");
+  const div = document.createElement("div");
+  const span = document.createElement("span");
+  const p = document.createElement("p");
 
-    p.innerText = homework; // Set the homework text
-    span.id = "del-homework";
-    span.innerHTML = "x"; // Set the delete button
+  p.innerText = homework; // Set the homework text
+  span.id = "del-homework";
+  span.innerHTML = "x"; // Set the delete button
 
-    div.appendChild(p);     // Append the homework text
-    div.appendChild(span);  // Append the delete button
-    return div;
+  div.appendChild(p);     // Append the homework text
+  div.appendChild(span);  // Append the delete button
+  return div;
 }
 
 // Add a new homework to the course
 function addHomework(button) {
   const parent = button.parentNode;
   const homeworks = parent.querySelector(".homeworks");
-  const courseElement = parent.closest(".plg-data"); // Find the course element
-  const courseName = courseElement.classList[4];     // Get the course name from the class
-  const courseId = courseElement.id;                 // Get the course ID
+  const courseElement = parent.closest(".plg-data");
+  const courseName = courseElement.classList[4];
+  const courseId = courseElement.id;
 
-  // Prompt the user to enter the homework
   const homework = prompt(`Add a homework for: ${courseName}`);
-
   if (homework) {
-    // Create new elements to display the homework
-    div = createHomeworkElement(homework);
-    homeworks.appendChild(div); // Add the new homework to the course
+    const div = createHomeworkElement(homework);
+    homeworks.appendChild(div);
 
-    // Ensure the course has an entry in the homeworkList
     if (!homeworkList[courseId]) {
       homeworkList[courseId] = [];
     }
-    homeworkList[courseId].push(homework); // Add the homework to the list
-    updateHomeworkMeter();                 // Update the homework count display
+    homeworkList[courseId].push(homework);
+
+    updateHomeworkMeter();
+    syncWithServer(); // Sync with server after adding homework
   }
 }
 
@@ -150,7 +185,7 @@ function updateHomeworkDisplay(list) {
       );
 
       list[data.id].forEach((homework) => {
-        div = createHomeworkElement(homework);
+        const div = createHomeworkElement(homework);
         homeworksContainer.appendChild(div);
       });
     }
@@ -162,17 +197,17 @@ function updateHomeworkDisplay(list) {
 // Remove a homework from the course
 function removeHomework(button) {
   const parent = button.parentNode;
-  const courseElement = parent.closest(".plg-data");        // Find the course element
-  const courseId = courseElement.id;                        // Get the course ID
-  const homeworkText = button.querySelector("p").innerHTML; // Get the homework text
+  const courseElement = parent.closest(".plg-data");
+  const courseId = courseElement.id;
+  const homeworkText = button.querySelector("p").innerHTML;
 
-  // Remove the homework from the homework list
   if (courseId in homeworkList) {
     homeworkList[courseId] = homeworkList[courseId].filter(
       (homework) => homework !== homeworkText
     );
   }
 
-  parent.removeChild(button); // Remove the homework item from the UI
-  updateHomeworkMeter();      // Update the homework count display
+  parent.removeChild(button);
+  updateHomeworkMeter();
+  syncWithServer(); // Sync with server after removing homework
 }
