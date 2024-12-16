@@ -1,13 +1,30 @@
 from flask import Blueprint, render_template, request, jsonify
 import scrap.scraping as scrap
+from scrap.scraping import getDay
 import json, os
 
 # create a Blueprint
 bp = Blueprint('main', __name__)
 
+semester    = "SM1"
+group       = "S1"
+group_week  = "A"
+
 # Path to the JSON file where data will be stored
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DATA_FILE = os.path.join(BASE_DIR, 'data/homework_data.json')
+HOMEWORK_FILE = os.path.join(BASE_DIR, f'data/homework_data_{semester}_{group}_{group_week}.json')
+PLANNING_FILE = os.path.join(BASE_DIR, f'data/planning_data_SM1_S1_A.json')
+
+
+def load_plg_data(PLG_DATA_FILE):
+    if os.path.exists(PLG_DATA_FILE):
+        with open(PLG_DATA_FILE, "r") as f:
+            return json.load(f)
+    return [{}, {}]
+
+def save_plg_data(data, PLG_DATA_FILE):
+    with open(PLG_DATA_FILE, "w") as f:
+        json.dump(data, f)
 
 @bp.route('/')
 def index():
@@ -23,10 +40,10 @@ def sync_homeworks():
         data = request.get_json()
 
         # Ensure the directory exists
-        os.makedirs(os.path.dirname(DATA_FILE), exist_ok=True)
+        os.makedirs(os.path.dirname(HOMEWORK_FILE), exist_ok=True)
 
         # Save the data to a JSON file
-        with open(DATA_FILE, 'w') as file:
+        with open(HOMEWORK_FILE, 'w') as file:
             json.dump(data, file, indent=4)
 
         return jsonify({"status": "success", "message": "Data synced to server successfully."}), 200
@@ -39,24 +56,48 @@ def load_homeworks():
     Load homework data from the server to the client.
     """
     try:
-        if not os.path.exists(DATA_FILE):
+        if not os.path.exists(HOMEWORK_FILE):
             return jsonify({}), 200  # Return an empty object if no file exists
 
-        with open(DATA_FILE, 'r') as file:
+        with open(HOMEWORK_FILE, 'r') as file:
             data = json.load(file)
 
         return jsonify(data), 200
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
 
-@bp.route('/plg')
+@bp.route('/plg', methods=['GET', 'POST'])
 def plg():
-    plg_data = get_plg_data()
-    return render_template('plg.html', plg_data=plg_data, title="Planning")
+    global PLANNING_FILE
+    global HOMEWORK_FILE
+    global semester
+    global group
+    global group_week
+    plg_data = load_plg_data(PLANNING_FILE)
 
-def get_plg_data():
-    plg_data = scrap.main()[0]
-    for day, day_data in plg_data.items():
+    if request.method == 'POST':
+        semester = request.form.get('semester', 'SM1')
+        group = request.form.get('group', 'S1')
+        group_week = request.form.get('group_week', 'A')
+
+        PLANNING_FILE = os.path.join(BASE_DIR, f'data/planning_data_{semester}_{group}_{group_week}.json')
+        plg_data = get_plg_data(SM=semester, grp=group, grpWeek=group_week)
+        save_plg_data(plg_data, PLANNING_FILE)
+
+    HOMEWORK_FILE = os.path.join(BASE_DIR, f'data/homework_data_{semester}_{group}_{group_week}.json')
+    
+    return render_template('plg.html', plg_data=plg_data[0], title="Planning")
+
+def get_plg_data(SM, grp, grpWeek):
+    if os.path.exists(PLANNING_FILE) and os.path.getsize(PLANNING_FILE) > 0:
+        with open(PLANNING_FILE, "r") as file:
+            json_data = json.load(file)
+        if json_data[1][-1]['jour'] == getDay():
+            planning_data = json_data
+    else:
+        planning_data = scrap.main(SM, grp, grpWeek)
+
+    for day, day_data in planning_data[0].items():
         jour= ""
         nom = ""
         h1  = ""
@@ -69,7 +110,9 @@ def get_plg_data():
             h2  = hp[1]
 
             data['infos_supp'] = {'abrvt_jour': jour, 'abrvt_nom': nom, 'heure_debut': h1, 'heure_fin': h2}
-    return plg_data
+
+    print(planning_data)
+    return planning_data
 
 
 def simplifier_nom(nom):

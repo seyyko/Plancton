@@ -1,23 +1,25 @@
 
 
-#plg-section{
+section{
     h2{
         font-size: clamp(30px, 10vw, 120px);
-        padding: 40px 3vw 0;
+        padding: 40px 1.5vw 0;
     }
 }
 
 .plg-content{
-    transform: scale(.9);
-    border: 1px solid rgb(var(--bg-tertiary));
+    width: 95vw; margin-inline: auto;
+    margin-block: calc(5vw / 2);
+    overflow: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, var(--alpha));
     border-radius: 5px;
-    /* overflow: hidden; */
+    border: 2px solid rgb(var(--bg-tertiary));
 }
 
 .week-days{
     display: flex; justify-content: space-evenly;
-    width: 100%; padding-block: 10px;
-    padding-inline: 5px;
+    min-width: 700px;
+    padding-inline: 5px; padding-block: 10px;
 
     background-color: rgb(var(--bg-tertiary));
     & p{
@@ -27,7 +29,7 @@
     }
 }
 .plg{
-    width: 100%;
+    min-width: 700px;
     padding: 5px;
 
     display: grid;
@@ -35,7 +37,7 @@
     grid-template-rows: repeat(1125, 1fr);
 
     gap: 1px .3vw;
-    /* overflow: hidden; */
+
     background-color: rgb(var(--alt-bg));
 }
 

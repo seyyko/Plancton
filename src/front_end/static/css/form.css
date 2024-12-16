@@ -1,0 +1,76 @@
+#plg-preferences {
+    background-color: rgb(var(--alt-bg));
+    border: 2px solid rgb(var(--bg-tertiary));
+    border-radius: 8px;
+
+    width: 95%;
+    padding: 20px;
+    margin: 20px auto;
+
+    box-shadow: 0 4px 8px rgba(0, 0, 0, var(--alpha));
+
+    h2{
+        padding-block: 0;
+    }
+}
+
+#plg-form{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Labels */
+#plg-preferences label {
+    display: block;
+    font-size: 16px;
+    margin-bottom: 5px;
+    margin-top: 15px;
+}
+
+/* Sélecteurs */
+#plg-preferences select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+
+    font-size: 14px;
+    color: rgb(var(--text-secondary));
+    background-color: rgb(var(--bg-tertiary));
+
+    border: 1px solid rgb(var(--bg-tertiary));
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, calc(var(--alpha) * 0.6));
+
+    transition: border-color 0.3s ease;
+}
+
+#plg-preferences select:focus {
+    border-color: rgb(var(--hover-bg));
+    outline: none;
+}
+
+/* Bouton */
+#plg-preferences button {
+    width: 100%;
+    padding: 10px 15px;
+    margin-top: 10px;
+
+    font-size: 16px;
+    color: rgb(var(--text-primary));
+    background-color: rgb(var(--hover-bg));
+
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, calc(var(--alpha) * 0.6));
+
+    transition: background-color 0.3s ease;
+}
+
+#plg-preferences button:hover {
+    background-color: rgb(var(--text-secondary));
+}
+
+#plg-preferences button:active {
+    background-color: rgb(var(--bg-secondary));
+}

@@ -1,5 +1,20 @@
 let homeworkList = JSON.parse(localStorage.getItem('homeworkList')) || {};
 
+document.getElementById("plg-form").addEventListener("submit", async function (event) {
+  // event.preventDefault();
+
+  const formData = new FormData(event.target);
+  const response = await fetch("/plg", {
+      method: "POST",
+      body: formData
+  });
+
+  if (response.ok) {
+      const data = await response.text();
+      console.log(data);
+  }
+});
+
 // Clear the homework list from localStorage
 function clearList() {
   localStorage.removeItem('homeworkList');
@@ -85,6 +100,38 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Error during initialization:", error);
   }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('plg-form');
+
+  // Fonction pour restaurer les données du localStorage dans le formulaire
+  function restoreFormData() {
+      const savedData = localStorage.getItem('plgFormData');
+      if (savedData) {
+          const formData = JSON.parse(savedData);
+          Object.keys(formData).forEach(key => {
+              const input = document.querySelector(`#plg-form [name="${key}"]`);
+              if (input) {
+                  input.value = formData[key];
+              }
+          });
+      }
+  }
+
+  // Écouteur sur le formulaire pour sauvegarder les données lors de la soumission
+  form.addEventListener('submit', () => {
+      const formData = {
+          semester: form.querySelector('[name="semester"]').value,
+          group: form.querySelector('[name="group"]').value,
+          group_week: form.querySelector('[name="group_week"]').value
+      };
+      localStorage.setItem('plgFormData', JSON.stringify(formData));
+  });
+
+  // Restaurer les données au chargement de la page
+  restoreFormData();
+});
+
 
 // Get the number of homeworks in a course
 function getHomeworkCount(homeworks) {
